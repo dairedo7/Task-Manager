@@ -5,25 +5,41 @@ import { Todo } from './todo.model';
   providedIn: 'root',
 })
 export class DataService {
-  todos: Todo[] = [
-    new Todo('this is a simple text', true),
-    new Todo('this is a second simple text'),
-  ];
+  private todos!: Todo[];
 
-  constructor() {}
+  constructor() {
+    this.loadTodos();
+  }
+
+  private loadTodos() {
+    const savedTodos = localStorage.getItem('todos');
+    if (savedTodos) {
+      this.todos = JSON.parse(savedTodos);
+    } else {
+      this.todos = [];
+    }
+  }
+
+  private saveTodos() {
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+  }
 
   getAllTodos() {
     return this.todos;
   }
+
   addTodo(todo: Todo) {
     this.todos.push(todo);
+    this.saveTodos();
   }
 
   updateTodo(index: number, updatedTodo: Todo) {
     this.todos[index] = updatedTodo;
+    this.saveTodos();
   }
 
   deleteTodo(index: number) {
     this.todos.splice(index, 1);
+    this.saveTodos();
   }
 }

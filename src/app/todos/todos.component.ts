@@ -35,7 +35,11 @@ export class TodosComponent implements OnInit {
   }
 
   toggleCompleted(todo: Todo) {
-    todo.completed = !todo.completed;
+    const index = this.todos.indexOf(todo);
+
+    const updatedTodo = { ...todo, completed: !todo.completed };
+
+    this.dataService.updateTodo(index, updatedTodo);
   }
 
   editTodo(todo: Todo) {
